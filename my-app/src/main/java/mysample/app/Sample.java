@@ -82,8 +82,17 @@ public class Sample {
         // jdbc:databricks://myaccount.cloud.databricks.com:443/default;httpPath=/sql/1.0/endpoints/123456
         // to enable logging ;LogLevel=6;LogPath=/Users/Moe.Derakhshani/tmp/simba-logs need to be appended to the endpoint
         // e.g., jdbc:databricks://myaccount.cloud.databricks.com:443/default;httpPath=/sql/1.0/endpoints/123456;LogLevel=6;LogPath=/Users/Moe.Derakhshani/tmp/simba-logs
-        dataSource.setURL(endpointURL);
-        System.out.println("endpoint: " + endpointURL);
+
+        String myProductName = "myProductName";
+        String myProductVersion = "1.2.3";
+        String endpointURLWithMoreConfigs = endpointURL +
+                // more information about UserAgentEntry is in the jdbc pdf doc
+                ";" + String.format("UserAgentEntry=%s/%s", myProductName, myProductVersion) +
+                // enable log
+                ";" + "LogLevel=6;LogPath=/Users/Moe.Derakhshani/tmp/simba-logs";
+
+        dataSource.setURL(endpointURLWithMoreConfigs);
+        log("endpoint: " + endpointURLWithMoreConfigs);
         dataSource.setUserID("token");
         dataSource.setPassword(patToken);
         return dataSource;
